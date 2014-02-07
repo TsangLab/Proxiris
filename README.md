@@ -14,6 +14,7 @@ Annotation efforts and re-use elements from other OA projects.
 This version is focused on closed workgroups, so security is all-or-nothing once logged in.
 
 The overall system focuses on a component oriented design, so much of the code
-developed in the project is located in other npm modules, this repository is
-focused on elements specific to TsangLab.
+developed in the project is located in other npm modules. In particular, see
+the http://www.github.com/Vid/SenseBase project. This repository will include code directly
+focused on TsangLab elements.
 
