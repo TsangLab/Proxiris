@@ -106,32 +106,32 @@ If you'd like to host Proxiris on port 80:
 `a2enmod proxy_http`
 
 
-  <VirtualHost *:80>
-      ServerName dashboard.my.great.domain
+    <VirtualHost *:80>
+        ServerName dashboard.my.great.domain
 
-      ProxyRequests off
+        ProxyRequests off
 
-      <Proxy *>
-          Order deny,allow
-          Allow from all
-      </Proxy>
+        <Proxy *>
+            Order deny,allow
+            Allow from all
+        </Proxy>
 
-      DocumentRoot /var/www/
+        DocumentRoot /var/www/
 
-      ProxyPass /lab !
+        ProxyPass /lab !
 
-      <Location />
-          ProxyPass http://localhost:9999/ retry=0
-          ProxyPassReverse http://localhost:9999/
-      </Location>
-          ErrorLog ${APACHE_LOG_DIR}/wc.error.log
+        <Location />
+            ProxyPass http://localhost:9999/ retry=0
+            ProxyPassReverse http://localhost:9999/
+        </Location>
+            ErrorLog ${APACHE_LOG_DIR}/wc.error.log
 
-          # Possible values include: debug, info, notice, warn, error, crit,
-          # alert, emerg.
-          LogLevel warn
+            # Possible values include: debug, info, notice, warn, error, crit,
+            # alert, emerg.
+            LogLevel warn
 
-          CustomLog ${APACHE_LOG_DIR}/wc.access.log combined
-  </VirtualHost>
+            CustomLog ${APACHE_LOG_DIR}/wc.access.log combined
+    </VirtualHost>
 
 `sudo service apache2 restart`
 
