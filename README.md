@@ -105,7 +105,7 @@ If you'd like to host Proxiris on port 80:
 
 `sudo apt-get install apache2`
 
-`a2enmod proxy_http`
+`sudo a2enmod proxy_http`
 
 Edit /etc/apache2/sites-available/proxiris:
 
