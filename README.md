@@ -14,10 +14,11 @@ Annotation efforts and re-use elements from other OA projects.
 This version is an evaluation version focused on closed workgroups, so security
 is all-or-nothing once logged in.
 
-The overall system focuses on a component oriented design, so much of the code
-developed in the project is located in other npm modules. For now, use the
-following instructions to install Proxiris. In time this repository will
-include code and an installation directly focused on TsangLab elements.
+The overall system focuses on a component oriented design, much of the code
+developed in the project is located in npm modules. Use the following
+instructions to install Proxiris. In time this repository will include TsangLab
+elements and a simpler installation, but please file an issue if you have
+difficulty today.
 
 Installation
 ========
