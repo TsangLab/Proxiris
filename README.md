@@ -22,15 +22,17 @@ include code and an installation directly focused on TsangLab elements.
 Installation
 ========
 
-Presuming a Debian derived distro, you will need to have build-essentials installed;
+Presuming a Debian derived distro:
 
-`sudo apt-get install openjdk-7-jre-headless`
+`sudo apt-get install build-essential openjdk-7-jre-headless`
 
-install elasticsearch .deb from http://www.elasticsearch.org/download/
+Install elasticsearch .deb from http://www.elasticsearch.org/download/
 
 `sudo service elasticsearch start`
 
-Install Nodejs eg `curl https://raw.github.com/creationix/nvm/master/install.sh | sh`
+Install Node.js (via NVM)
+
+`curl https://raw.github.com/creationix/nvm/master/install.sh | sh`
 
 `source ./nvm/nvm.sh`
 
@@ -46,7 +48,7 @@ Install Nodejs eg `curl https://raw.github.com/creationix/nvm/master/install.sh 
 
 `npm install winston`
 
-Create a configjs file:
+Create a config.js file:
 
 
     // logging
@@ -102,6 +104,7 @@ Start service pubsub agents, for Sentiment:
 If you'd like to host Proxiris on port 80:
 
 `a2enmod proxy_http`
+
 
   <VirtualHost *:80>
       ServerName dashboard.my.great.domain
