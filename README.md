@@ -103,8 +103,11 @@ Start service pubsub agents, for Sentiment:
 
 If you'd like to host Proxiris on port 80:
 
+`sudo apt-get install apache2`
+
 `a2enmod proxy_http`
 
+Edit /etc/apache2/sites-available/proxiris:
 
     <VirtualHost *:80>
         ServerName dashboard.my.great.domain
@@ -132,6 +135,8 @@ If you'd like to host Proxiris on port 80:
 
             CustomLog ${APACHE_LOG_DIR}/wc.access.log combined
     </VirtualHost>
+
+`sudo a2ensite proxiris`
 
 `sudo service apache2 restart`
 
