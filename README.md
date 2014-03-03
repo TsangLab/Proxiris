@@ -47,7 +47,17 @@ Install Node.js (via NVM)
 
 … time passes …
 
+Install dev deps:
+
 `npm install winston`
+
+`npm install -g bower`
+
+`npm install -g grunt-cli`
+
+Install third party client JavaScript libs:
+
+`bower install`
 
 Create a config.js file:
 
@@ -76,13 +86,13 @@ Create a config.js file:
       SENTIMENT: { host: 'sentiment' + domain, port: 9002},
       NOCACHE_REGEX: '.*.' + domain,
       CACHE_DIR : '/some/dir',
-      uploadDirectory: './static/files',
+      uploadDirectory: './uploads',
       doCache : true,
       doAuth: true,
       logStream : { write: function() {}}
     }
 
-Edit users.json to configure users.
+Create the defined uploadDirectory for serving those files.
 
 Run `sh host/schema.sh proxiris` to create the ElasticSearch explicit mappings.
 
