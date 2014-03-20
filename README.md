@@ -100,7 +100,16 @@ Start the HTTP service:
 
 `node app.js`
 
-Start any annotating services (eg REST based), for example the Sentiment service:
+Annotators
+========
+
+Annotators connect to the general system via a publication-subscribe system.
+They may be standalone, or they may have a wrapping service to connect them to
+a long running process. The GATE and Sentiment pipeline works this way.
+
+
+
+Start any wrapping services, for example the Sentiment service:
 
 `cd annotateServices`
 
@@ -112,7 +121,23 @@ Start service pubsub agents, for Sentiment:
 
 `node sentiment`
 
-If you'd like to host Proxiris on port 80:
+GATE pipeline
+========
+
+To configure the GATE pipeline:
+
+`cd java`
+
+`cp pipeline.properties.sample pipeline.properties`
+
+`$EDITOR pipeline.properties`
+
+Edit as appropriate. The sample is for https://github.com/TsangLab/Annotators
+
+then `ant` to compile, or `ant run-pipeline` to test.
+
+Host Proxiris on port 80 (Apache)
+========
 
 `sudo apt-get install apache2`
 
