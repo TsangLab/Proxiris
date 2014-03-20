@@ -1,4 +1,0 @@
-{
-  [ "../../../../../target/" ,"../../../resources/gate.jar" ,"../../../resources/ant.jar" ,"../../../resources/ivy.jar" ,"../../../resources/jaxen.jar" ,"../../../resources/commons-io.jar" ,"../../../resources/commons-lang.jar" ,"../../../resources/commons-logging.jar" ,"../../../resources/dom4j.jar" ,"../../../resources/gate-asm.jar" ,"../../../resources/gate-compiler-jdt.jar" ,"../../../resources/jdom.jar" ,"../../../resources/log4j/log4j.jar" ,"../../../resources/nekohtml.jar" ,"../../../resources/tika-core.jar" ,"../../../resources/xercesImpl.jar" ,"../../../resources/xstream.jar" ]
-}
-
