@@ -1,0 +1,4 @@
+gate.home=../Annotators/lib
+xgapp.location=../Annotators/substrateMINE/application.xgapp
+xgapp.plugins.location=../Annotators/substrateMINE/plugins
+gate.site.config.location=../Annotators/lib/gate.xml
