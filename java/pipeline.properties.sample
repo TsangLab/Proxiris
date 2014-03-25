@@ -3,3 +3,6 @@ libs.list=gate.jar,ant.jar,ivy.jar,jaxen.jar,commons-io.jar,commons-lang.jar,gat
 xgapp.location=/home/youraccount/Annotators/application.xgapp
 xgapp.plugins.location=/home/youraccount/Annotators/plugins
 gate.site.config.location=/home/youraccount/Annotators/lib/gate.xml
+host=localhost
+port=9009
+

@@ -1,18 +1,7 @@
-var http = require('http'), querystring = require('querystring'), java = require("java"), fs = require('fs'), url = require('url'), path = require('path');
+var http = require('http'), querystring = require('querystring'), java = require("java"), fs = require('fs'), url = require('url'), path = require('path'),
+    utils = require('./../lib/utils.js');
 
-var javaPropsLoc = 'java/pipeline.properties', javaProps = {};
-
-try {
-  var propsText = fs.readFileSync(javaPropsLoc);
-  propsText.toString().split('\n').forEach(function(t) {
-    var s = t.split('=');
-    if (s[1]) {
-      javaProps[s[0].trim()] = s[1].trim();
-    }
-  });
-} catch (e) {
-  throw Error('error reading java properties ' + javaPropsLoc + ': ' + e);
-}
+var javaProps = utils.getProperties('java/pipeline.properties');
 
 if (!fs.existsSync('target/proxiris.jar')) {
   throw Error('please create proxiris.jar by typing ant in the java directory');
@@ -64,7 +53,7 @@ http.createServer(function(request, response) {
 		}
   }
 
-}).listen(9009);
+}).listen(javaProps.port);
 
 function postRequest(request, response, callback) {
     var queryData = "";
