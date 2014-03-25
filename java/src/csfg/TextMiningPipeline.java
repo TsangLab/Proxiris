@@ -36,6 +36,11 @@ public class TextMiningPipeline {
 
 	static AnnotationConfig annoConfig = new AnnotationConfig();
 
+  /**
+   *
+   * When run standalone, uses arg 1 properties file to process arg 2, outputting in /tmp/sample.html
+   **/
+
 	public static void main(String[] args) throws GateException, IOException, InterruptedException {
     TextMiningPipeline g = new TextMiningPipeline();
     System.out.println(args.length);
@@ -46,6 +51,11 @@ public class TextMiningPipeline {
     writeFile(doc, "/tmp/sample.html");
 	}
 	
+  /**
+   *
+   * initialize wtih properties file
+   *
+   **/
 	public void init(String config) throws GateException, IOException {
     System.out.println("init from " + System.getProperty("user.dir"));
 		File gateHome = null, xgappHome = null, xgappPluginsHome = null, siteConfigFile = null;
@@ -73,6 +83,13 @@ public class TextMiningPipeline {
 		application.setCorpus(corpus);
  	}
 
+
+  /**
+   *
+   * process an HTML file adding all annotations
+   *
+   **/
+
 	public void processFile(String fileName) throws ResourceInstantiationException, ExecutionException, IOException {
 		System.out.println("Processing document " + fileName);
 		File docFile = new File(fileName);
@@ -80,21 +97,14 @@ public class TextMiningPipeline {
 		String text = doc.getContent().toString();
 		mapResult = new MapList();
 		Set<Annotation> docAnnos = new HashSet<Annotation>();
-		// iterate through desired annotation types, extracting from doc annotations		
 		for (String type :  doc.getAnnotations().getAllTypes())  {
 			if (type != null) {
-				if ((annoConfig.annotationTypesToWrite != null && annoConfig.annotationTypesToWrite.contains(type))){
-//				if ((annotationTypesToWrite != null && annotationTypesToWrite.contains(type))
-//						|| (annotationTypesToWrite == null && (!"Token".equals(type) && !"Sentence".equals(type) && !"SpaceToken".equals(type) && !"Split".equals(type) && !"Document".equals(type) && !"NP".equals(type) && !"AccessionNumber".equals(type)))) {
-//					
-					AnnotationSet as = doc.getAnnotations().get(type);
-					for (Annotation a : as) {
-						String t = text.substring((int) (long) a.getStartNode().getOffset(), (int) (long) a.getEndNode().getOffset());
-						//System.out.print(t);
-						docAnnos.add(a);
-						mapResult.put(type, t);
-					}
-				}
+        AnnotationSet as = doc.getAnnotations().get(type);
+        for (Annotation a : as) {
+          String t = text.substring((int) (long) a.getStartNode().getOffset(), (int) (long) a.getEndNode().getOffset());
+          docAnnos.add(a);
+          mapResult.put(type, t);
+        }
 			}
 		}
 		docResult = doc.toXml(docAnnos, true);
@@ -102,14 +112,31 @@ public class TextMiningPipeline {
 		Factory.deleteResource(doc);
 	}
 
+  /**
+   *
+   * Retrieve the HTML document result with inline annotations
+   *
+   **/
 	public String getDocResult() {
 		return docResult;
 	}
+ 
+  /**
+   *
+   * Get a map of annotations
+   *
+   **/
 	
 	public MapList getMapResult() {
 		return mapResult;
 	}
 	
+  /**
+   *
+   * Actually add the annotations
+   *
+   **/
+
 	Document addAnnotations(File docFile) throws ResourceInstantiationException, MalformedURLException, ExecutionException {
 		Document doc = Factory.newDocument(docFile.toURL(), encoding);
 		//doc.setPreserveOriginalContent(true);
@@ -121,6 +148,12 @@ public class TextMiningPipeline {
 		return doc;
 	}
 	
+  /**
+   *
+   * Prepare an html snippet for annotation
+   *
+   **/
+
 	public void processText(String text) throws ResourceInstantiationException, ExecutionException, IOException {
 		File docFile = File.createTempFile("sample", ".html");
 		//f.deleteOnExit();
@@ -129,44 +162,16 @@ public class TextMiningPipeline {
 		processFile(tmp);
 	}
 	
+  /**
+   *
+   * Helper to write a file
+   *
+   **/
+
 	public static void writeFile(String txt, String outfile) throws IOException {
 		FileWriter fw = new FileWriter(outfile);
 		BufferedWriter out = new BufferedWriter(fw);
 		out.write(txt);
 		out.close();
 	}
-}
-
-// Configure what annotations and features
-class AnnotationConfig {
-
-  // list of specific annotation types to write out
-  // TODO read from a property file
-  public List<String> annotationTypesToWrite = new ArrayList<String>(); {
-    annotationTypesToWrite.add("AccessionNumber");  // parent
-    annotationTypesToWrite.add("ActivityAssayConditions");  // parent, sentence
-    annotationTypesToWrite.add("Characterization"); // parent, sentence
-    annotationTypesToWrite.add("ECnumber"); // parent
-    annotationTypesToWrite.add("Enzyme"); // parent
-    annotationTypesToWrite.add("Expression"); // parent, sentence
-    annotationTypesToWrite.add("Family"); // parent
-    annotationTypesToWrite.add("Fungus"); // child: Organism > Fungus
-    annotationTypesToWrite.add("Gene"); // parent
-    annotationTypesToWrite.add("GlycosideHydrolase"); // child: Enzyme > GlycosideHydrolase 
-    annotationTypesToWrite.add("Kinetics"); // parent, sentence
-    annotationTypesToWrite.add("Laccase");  // child: Enzyme > Laccase
-    annotationTypesToWrite.add("Lipase"); // child: Enzyme > Lipase
-    annotationTypesToWrite.add("Organism"); // parent
-    annotationTypesToWrite.add("Peroxidase"); // child: Enzyme > Peroxidase
-    annotationTypesToWrite.add("pH"); // parent, sentence
-//    annotationTypesToWrite.add("ProductAnalysis");
-    annotationTypesToWrite.add("SpecificActivity");// parent, sentence  
-    annotationTypesToWrite.add("Substrate");  // parent
-//    annotationTypesToWrite.add("SubstrateSpecificity"); // parent, sentence
-    annotationTypesToWrite.add("Temperature");  // parent, sentence
-  }
-
-  // annotation level
-  public Boolean includeFeatures = false;
-
 }
