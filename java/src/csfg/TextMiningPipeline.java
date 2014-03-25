@@ -52,7 +52,7 @@ public class TextMiningPipeline {
       Properties properties = new Properties();
       InputStream input = new FileInputStream(config);
       properties.load(input);
-			gateHome = new File(properties.getProperty("gate.home"));
+			gateHome = new File(properties.getProperty("lib.home"));
 			xgappHome = new File(properties.getProperty("xgapp.location"));
 			xgappPluginsHome = new File(properties.getProperty("xgapp.plugins.location"));
 			siteConfigFile = new File(properties.getProperty("gate.site.config.location"));
