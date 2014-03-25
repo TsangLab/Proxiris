@@ -20,24 +20,22 @@ annoLib.requestAnnotate(function(combo) {
   var uri = combo.uri, html = combo.html, text = combo.text;
   GLOBAL.info(name, uri, text.length);
 
-  try {
-    var $ = cheerio.load(markedUp);
-  } catch (e) {
-    GLOBAL.error(name, e);
-    return;
-  }
-  wantedAnnos.forEach(function(anno) {
-    $.find(anno).forEach(function(found) {
-      console.log(found);
-    });
-  });
-  
   // process each individual callback
-  candidates(text, function(markedUp) {
+  markup(text, function(markedUp) {
+    try {
+      var $ = cheerio.load(markedUp);
+    } catch (e) {
+      GLOBAL.error(name, e);
+      return;
+    }
+    var annoRows = [];
+    wantedAnnos.forEach(function(anno) {
+      $('body').find(anno).each(function(i, found) {
+        console.log('\n', anno, i, { text: $(found).text(), attr: $(found).attr()});
+      });
+    });
 
-    var annoRows = [], score = json[0].r.score;
-    annoRows.push(annotations.createAnnotation({type: 'value', annotatedBy: name, hasTarget: uri, key: 'score', value : score }));
-
+    /*
     var seen = {};
     ['positive', 'negative'].forEach(function(set) {
       json[0].r[set].words.forEach(function(w) {
@@ -47,13 +45,14 @@ annoLib.requestAnnotate(function(combo) {
         }
       });
     });
+    */
 
-    annoLib.publishAnnotations(uri, annoRows);
+//    annoLib.publishAnnotations(uri, annoRows);
   });
 });
 
 // make a post request and callback results
-function candidates(text, callback) {
+function markup(text, callback) {
   var postData = querystring.stringify({data : text});
 
   var postOptions = {
