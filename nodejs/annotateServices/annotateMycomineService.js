@@ -14,14 +14,30 @@ try {
   throw Error('error reading java properties ' + javaPropsLoc + ': ' + e);
 }
 
-java.classpath = java.classpath.concat(javaProps['libs.list'].split(',').map(function(p) { return path.join(__dirname, javaProps['lib.home'], p);}));
+if (!fs.existsSync('target/proxiris.jar')) {
+  throw Error('please create proxiris.jar by typing ant in the java directory');
+}
+
+console.log('checking jar path');
+java.classpath = java.classpath.concat(javaProps['libs.list'].split(',').map(function(p) { 
+  var f = path.join(javaProps['libs.home'], p)
+  if (!fs.existsSync(f)) {
+    throw Error('property jar not found ' + f);
+  }
+  return f;
+}));
 java.classpath.push('target/');
-console.log(java.classpath);
 
 var TextMiningPipeline = java.import('csfg.TextMiningPipeline');
 var pipe = new TextMiningPipeline();
-pipe.initSync('java/pipeline.properties');
-console.log("ready");
+try {
+  pipe.initSync('java/pipeline.properties');
+} catch(e) {
+  console.log('failed calling init. standalone invocation:\njava -cp ', java.classpath.join(':'), 'csfg.TextMiningPipeline');
+  throw e;
+}
+
+console.log('ready');
 
 http.createServer(function(request, response) {
     if (request.method == 'POST') {
@@ -48,7 +64,7 @@ http.createServer(function(request, response) {
 		}
   }
 
-}).listen(9000);
+}).listen(9009);
 
 function postRequest(request, response, callback) {
     var queryData = "";

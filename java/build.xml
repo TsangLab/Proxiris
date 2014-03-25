@@ -3,7 +3,7 @@
 
   <property name="build" value="../target"/>
   <property name="src" value="src"/>
-  <property name="lib" value="${lib.home}"/>
+  <property name="lib" value="${libs.home}"/>
   
   <target name="clean">
     <delete dir="${build}"/>

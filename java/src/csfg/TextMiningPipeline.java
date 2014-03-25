@@ -38,6 +38,7 @@ public class TextMiningPipeline {
 
 	public static void main(String[] args) throws GateException, IOException, InterruptedException {
     TextMiningPipeline g = new TextMiningPipeline();
+    System.out.println(args.length);
     g.init(args[0]);
     g.processFile(args[1]);
     String doc = g.getDocResult();
@@ -46,13 +47,14 @@ public class TextMiningPipeline {
 	}
 	
 	public void init(String config) throws GateException, IOException {
+    System.out.println("init from " + System.getProperty("user.dir"));
 		File gateHome = null, xgappHome = null, xgappPluginsHome = null, siteConfigFile = null;
 		
 		try {
       Properties properties = new Properties();
       InputStream input = new FileInputStream(config);
       properties.load(input);
-			gateHome = new File(properties.getProperty("lib.home"));
+			gateHome = new File(properties.getProperty("libs.home"));
 			xgappHome = new File(properties.getProperty("xgapp.location"));
 			xgappPluginsHome = new File(properties.getProperty("xgapp.plugins.location"));
 			siteConfigFile = new File(properties.getProperty("gate.site.config.location"));

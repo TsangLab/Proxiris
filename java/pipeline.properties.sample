@@ -1,6 +1,5 @@
-lib.home=../Annotators/lib
-libs.list=gate.jar,ant.jar,ivy.jar,jaxen.jar,commons-io.jar,commons-lang.jar,commons-logging.jar,dom4j.jar,gate-asm.jar,gate-compiler-jdt.jar,jdom.jar,log4j/lo
-g4j.jar,nekohtml.jar,tika-core.jar,xercesImpl.jar,xstream.jar
-xgapp.location=../Annotators/substrateMINE/application.xgapp
-xgapp.plugins.location=../Annotators/substrateMINE/plugins
-gate.site.config.location=../Annotators/lib/gate.xml
+libs.home=/home/youraccount/Annotators/lib
+libs.list=gate.jar,ant.jar,ivy.jar,jaxen.jar,commons-io.jar,commons-lang.jar,gate-asm.jar,gate-compiler-jdt.jar,jdom.jar,log4j/log4j.jar,nekohtml.jar,tika-core.jar,xercesImpl.jar,xstream.jar
+xgapp.location=/home/youraccount/Annotators/application.xgapp
+xgapp.plugins.location=/home/youraccount/Annotators/plugins
+gate.site.config.location=/home/youraccount/Annotators/lib/gate.xml

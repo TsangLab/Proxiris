@@ -105,9 +105,9 @@ Annotators
 
 Annotators connect to the general system via a publication-subscribe system.
 They may be standalone, or they may have a wrapping service to connect them to
-a long running process. The GATE and Sentiment pipeline works this way.
-
-
+a long running process. The GATE and Sentiment pipeline works this way. You
+probably want to use something like GNU Screen to run all these services, or an
+init system like Supervisor.
 
 Start any wrapping services, for example the Sentiment service:
 
@@ -124,6 +124,8 @@ Start service pubsub agents, for Sentiment:
 GATE pipeline
 ========
 
+The GATE pipeline takes GATE tagged documents and transform them into instance annotations.
+
 To configure the GATE pipeline:
 
 `cd java`
@@ -132,9 +134,23 @@ To configure the GATE pipeline:
 
 `$EDITOR pipeline.properties`
 
+Note absolute paths are used to avoid much sorrow and pain when compiling and executing.
+
 Edit as appropriate. The sample is for https://github.com/TsangLab/Annotators
 
 then `ant` to compile, or `ant run-pipeline` to test.
+
+then execute:
+
+`node node/annotateServices/annotateMycomineService.js`
+
+to start the GATE service on port 9009. This program runs a number of sanity checks to help debug.
+
+then execute:
+
+`node nodejs/lib/annotators/gateAnnotator.js`
+
+to start the pubsub agent.
 
 Host Proxiris on port 80 (Apache)
 ========
