@@ -43,7 +43,6 @@ public class TextMiningPipeline {
 
 	public static void main(String[] args) throws GateException, IOException, InterruptedException {
     TextMiningPipeline g = new TextMiningPipeline();
-    System.out.println(args.length);
     g.init(args[0]);
     g.processFile(args[1]);
     String doc = g.getDocResult();
