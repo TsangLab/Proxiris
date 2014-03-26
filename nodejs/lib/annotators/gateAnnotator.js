@@ -10,7 +10,7 @@ var querystring = require('querystring'), http = require('http'), cheerio = requ
 var annoLib = require(sensebase + 'lib/annotators/annotateLib'), annotations = require(sensebase + 'lib/annotations'), utils = require('../../lib/utils.js');
 
 // local configuration
-var instanceProps = utils.getProperties('java/pipeline.properties');
+var instanceProps = utils.getProperties('./pipeline.properties');
 var wantedAnnos = instanceProps.annotations.split(',');
 
 var name = 'GATE annotator';
