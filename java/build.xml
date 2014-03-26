@@ -1,5 +1,5 @@
 <project name="proxiris" basedir="." default="proxiris-jar">
-  <property file="pipeline.properties"/>
+  <property file="../pipeline.properties"/>
 
   <property name="build" value="../target"/>
   <property name="src" value="src"/>
@@ -15,7 +15,7 @@
 
   <target name="run-pipe" depends="clean,proxiris-jar">
     <java classname="csfg.TextMiningPipeline">
-      <arg value="pipeline.properties"/>
+      <arg value="../pipeline.properties"/>
       <arg value="../test/test.html"/>
       <classpath>
         <fileset dir="${lib}">

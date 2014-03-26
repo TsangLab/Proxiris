@@ -1,7 +1,8 @@
 var http = require('http'), querystring = require('querystring'), java = require("java"), fs = require('fs'), url = require('url'), path = require('path'),
     utils = require('./../lib/utils.js');
 
-var javaProps = utils.getProperties('java/pipeline.properties');
+var propFile = './pipeline.properties';
+var javaProps = utils.getProperties(propFile);
 
 if (!fs.existsSync('target/proxiris.jar')) {
   throw Error('please create proxiris.jar by typing ant in the java directory');
@@ -20,7 +21,7 @@ java.classpath.push('target/');
 var TextMiningPipeline = java.import('csfg.TextMiningPipeline');
 var pipe = new TextMiningPipeline();
 try {
-  pipe.initSync('java/pipeline.properties');
+  pipe.initSync(propFile);
 } catch(e) {
   console.log('failed calling init. standalone invocation:\njava -cp ', java.classpath.join(':'), 'csfg.TextMiningPipeline');
   throw e;
