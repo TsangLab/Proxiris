@@ -11,6 +11,7 @@ var annoLib = require(sensebase + 'lib/annotators/annotateLib'), annotations = r
 
 // local configuration
 var instanceProps = utils.getProperties('./pipeline.properties');
+// indicate which annotations are interesting in the properties file
 var wantedAnnos = instanceProps.annotations.split(',');
 
 var name = 'GATE annotator';
@@ -20,7 +21,7 @@ annoLib.requestAnnotate(function(combo) {
   var uri = combo.uri, html = combo.html, text = combo.text;
   GLOBAL.info(name, uri, text.length);
 
-  // process each individual callback
+  // process retrieved annotations
   markup(text, function(markedUp) {
     try {
       var $ = cheerio.load(markedUp);
@@ -31,23 +32,14 @@ annoLib.requestAnnotate(function(combo) {
     var annoRows = [];
     wantedAnnos.forEach(function(anno) {
       $('body').find(anno).each(function(i, found) {
-        console.log('\n', anno, i, { text: $(found).text(), attr: $(found).attr()});
+        var exact = $(found).text();
+        console.log('\nfound', anno, i, { text: text, text: $.html(found), attr: $(found).attr()});
+        // determine what document instance this exact is
+        annoRows.push(annotations.createAnnotation({type: 'quote', annotatedBy: name, hasTarget: uri, quote: exact, ranges: annoLib.bodyInstancesFromMatches(exact, html)}));
       });
     });
 
-    /*
-    var seen = {};
-    ['positive', 'negative'].forEach(function(set) {
-      json[0].r[set].words.forEach(function(w) {
-        if (!seen[w]) {
-          annoRows.push(annotations.createAnnotation({type: 'quote', annotatedBy: name, hasTarget: uri, quote: w, ranges: annoLib.bodyInstancesFromMatches(w, html)}));
-          seen[w] = 1;
-        }
-      });
-    });
-    */
-
-//    annoLib.publishAnnotations(uri, annoRows);
+    annoLib.publishAnnotations(uri, annoRows);
   });
 });
 
