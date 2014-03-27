@@ -14,7 +14,7 @@ var instanceProps = utils.getProperties('./pipeline.properties');
 // indicate which annotations are interesting in the properties file
 var wantedAnnos = instanceProps.annotations.split(',');
 
-var name = 'GATE annotator';
+var name = instanceProps.name;
 
 // wait for annotation requests
 annoLib.requestAnnotate(function(combo) {
@@ -29,13 +29,22 @@ annoLib.requestAnnotate(function(combo) {
       GLOBAL.error(name, e);
       return;
     }
-    var annoRows = [];
+    var annoRows = [], candidates = {};
+    // do this in two passes; the first captures all annotation instances. The second adds GATE indicated instances.
+    // pass one: capture all instances
+    wantedAnnos.forEach(function(anno) {
+      if (!candidates[anno]) {
+        $('body').find(anno).each(function(i, found) {
+          var exact = $(found).text();
+          candidates[anno] = annoLib.bodyInstancesFromMatches(exact, html);
+        });
+      }
+    });
+
+    // pass: two extract indicated instances
     wantedAnnos.forEach(function(anno) {
       $('body').find(anno).each(function(i, found) {
-        var exact = $(found).text();
-        console.log('\nfound', anno, i, { text: text, text: $.html(found), attr: $(found).attr()});
-        // determine what document instance this exact is
-        annoRows.push(annotations.createAnnotation({type: 'quote', annotatedBy: name, hasTarget: uri, quote: exact, ranges: annoLib.bodyInstancesFromMatches(exact, html)}));
+        console.log('LL', $(found).attr('id'), candidates[anno]);
       });
     });
 

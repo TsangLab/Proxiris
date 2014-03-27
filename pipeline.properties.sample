@@ -5,4 +5,5 @@ xgapp.plugins.location=/home/youraccount/Annotators/plugins
 gate.site.config.location=/home/youraccount/Annotators/lib/gate.xml
 host=localhost
 port=9009
+name=Sample
 
