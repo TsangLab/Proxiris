@@ -18,11 +18,16 @@ var name = instanceProps.name;
 
 // wait for annotation requests
 annoLib.requestAnnotate(function(combo) {
-  var uri = combo.uri, html = combo.html, text = combo.text;
-  GLOBAL.info(name, uri, text.length);
+  var uri = combo.uri, html = combo.html, text = combo.text, selector = combo.selector;
+  GLOBAL.info(name, uri, selector, text ? text.length : 'notext');
+// empty input
+  if (!html || html.length < 0 || !html.trim()) {
+    return;
+  }
 
   // process retrieved annotations
   markup(text, function(markedUp) {
+console.log(markedUp);
     try {
       var $ = cheerio.load(markedUp);
     } catch (e) {
@@ -34,20 +39,19 @@ annoLib.requestAnnotate(function(combo) {
     // pass one: capture all instances
     wantedAnnos.forEach(function(anno) {
       if (!candidates[anno]) {
-        $('body').find(anno).each(function(i, found) {
-          var exact = $(found).text();
-          candidates[anno] = annoLib.bodyInstancesFromMatches(exact, html);
+        $('body').find(anno).each(function(i, w) {
+          var exact = $($.html(w)).text();
+          console.log('\nfound', anno, i, { exact: exact, attr: $(w).attr()});
+
+          annoRows.push(annotations.createAnnotation({type: 'quote', annotatedBy: name, hasTarget: uri, quote: anno,
+            ranges: annoLib.bodyInstancesFromMatches(exact, html, selector)}));
+          candidates[w] = 1;
         });
       }
     });
 
-    // pass: two extract indicated instances
-    wantedAnnos.forEach(function(anno) {
-      $('body').find(anno).each(function(i, found) {
-        console.log('LL', $(found).attr('id'), candidates[anno]);
-      });
-    });
-
+console.log('found', annoRows.length);
+    // TODO determine position in GATE document of annot and choose from indexed regexes
     annoLib.publishAnnotations(uri, annoRows);
   });
 });
