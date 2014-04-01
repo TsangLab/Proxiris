@@ -142,11 +142,11 @@ then `ant` to compile, or `ant run-pipeline` to test.
 
 then execute:
 
-`node node/annotateServices/annotateMycomineService.js`
+`node nodejs/annotateServices/annotateGATEService.js`
 
 to start the GATE service on port 9009. This program runs a number of sanity checks to help debug.
 
-then execute:
+then execute (in another terminal):
 
 `node nodejs/lib/annotators/gateAnnotator.js`
 
