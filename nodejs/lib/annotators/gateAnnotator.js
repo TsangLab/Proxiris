@@ -50,7 +50,7 @@ annoLib.requestAnnotate(function(combo) {
       }
     });
 
-console.log('found', annoRows.length);
+    GLOBAL.info('found', annoRows.length);
     // TODO determine position in GATE document of annot and choose from indexed regexes
     annoLib.publishAnnotations(uri, annoRows);
   });
