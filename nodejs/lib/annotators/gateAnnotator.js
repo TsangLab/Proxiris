@@ -27,7 +27,7 @@ annoLib.requestAnnotate(function(combo) {
 
   // process retrieved annotations
   markup(text, function(markedUp) {
-console.log(markedUp);
+//console.log(markedUp);
     try {
       var $ = cheerio.load(markedUp);
     } catch (e) {
@@ -37,13 +37,13 @@ console.log(markedUp);
     var annoRows = [], candidates = {};
     // do this in two passes; the first captures all annotation instances. The second adds GATE indicated instances.
     // pass one: capture all instances
-    wantedAnnos.forEach(function(anno) {
-      if (!candidates[anno]) {
-        $('body').find(anno).each(function(i, w) {
-          var exact = $($.html(w)).text();
-          console.log('\nfound', anno, i, { exact: exact, attr: $(w).attr()});
+    wantedAnnos.forEach(function(annoType) {
+      if (!candidates[annoType]) {
+        $('body').find(annoType).each(function(i, w) {
+          var exact = $($.html(w)).text(), attributes = $(w).attr();
+//          console.log('\nfound', annoType, i, { exact: exact, attr: attributes});
 
-          annoRows.push(annotations.createAnnotation({type: 'quote', annotatedBy: name, hasTarget: uri, quote: anno,
+          annoRows.push(annotations.createAnnotation({type: 'quote', annotatedBy: name, hasTarget: uri, roots: annoType, quote: exact, attributes: attributes,
             ranges: annoLib.bodyInstancesFromMatches(exact, html, selector)}));
           candidates[w] = 1;
         });
