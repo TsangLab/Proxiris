@@ -105,8 +105,7 @@ Annotators
 
 Annotators connect to the general system via a publication-subscribe system.
 They may be standalone, or they may have a wrapping service to connect them to
-a long running process. The GATE and Sentiment pipeline works this way. You
-probably want to use something like [pm2](https://github.com/Unitech/pm2) to run all these services.
+a long running process. The GATE and Sentiment pipeline works this way. 
 
 To manually start annotation, for example the Sentiment service:
 
