@@ -15,5 +15,5 @@ npm-debug.log
 node_modules
 config.js
 target
-pipeline.properties
+./pipeline.properties
 

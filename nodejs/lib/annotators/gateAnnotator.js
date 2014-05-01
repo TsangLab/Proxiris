@@ -8,6 +8,7 @@ var sensebase = '../../../node_modules/sensebase/';
 var querystring = require('querystring'), http = require('http'), cheerio = require('cheerio');
 
 var annoLib = require(sensebase + 'lib/annotators/annotateLib'), annotations = require(sensebase + 'lib/annotations'), utils = require('../../lib/utils.js');
+exports.doProcess = doProcess;
 
 // local configuration
 var instanceProps = utils.getProperties('./pipeline.properties');
@@ -17,29 +18,34 @@ var wantedAnnos = instanceProps.annotations.split(',');
 var name = instanceProps.name;
 
 // wait for annotation requests
-annoLib.requestAnnotate(function(combo) {
+annoLib.requestAnnotate(doProcess);
+
+function doProcess(combo, callback) {
   var uri = combo.uri, html = combo.html, text = combo.text, selector = combo.selector;
-  GLOBAL.info(name, uri, selector, text ? text.length : 'notext');
+  GLOBAL.info(name, uri, selector, html ? html.length : 'nohtml');
 // empty input
   if (!html || html.length < 0 || !html.trim()) {
-    return;
+    callback(null, { name: name, uri: uri, annoRows: []});
   }
 
   // process retrieved annotations
   markup(text, function(markedUp) {
-//console.log(markedUp);
     try {
       var $ = cheerio.load(markedUp);
     } catch (e) {
       GLOBAL.error(name, e);
-      return;
+      callback(e, name);
     }
     var annoRows = [], candidates = {};
     // do this in two passes; the first captures all annotation instances. The second adds GATE indicated instances.
     // pass one: capture all instances
     wantedAnnos.forEach(function(annoType) {
       if (!candidates[annoType]) {
-        $('body').find(annoType).each(function(i, w) {
+        $(selector).find(annoType).each(function(i, w) {
+      console.log(annoType, w);
+          // now we have something that look like this 
+          // <Organism gate:gateId="12524" annot_type="Organism" class="Organism" organism_scientific_name="unidentified influenza virus" organism_alias="Influenza Virus" NCBI_Taxonomy_WebPage="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=11309&amp;mode=info" NCBI_Taxonomy_ID="11309">Influenza Virus</Organism>
+          // get its internal text and attributes
           var exact = $($.html(w)).text(), attributes = $(w).attr();
 //          console.log('\nfound', annoType, i, { exact: exact, attr: attributes});
 
@@ -52,9 +58,9 @@ annoLib.requestAnnotate(function(combo) {
 
     GLOBAL.info('found', annoRows.length);
     // TODO determine position in GATE document of annot and choose from indexed regexes
-    annoLib.publishAnnotations(uri, annoRows);
+    callback(null, { name: name, uri: uri, annoRows: annoRows});
   });
-});
+}
 
 // make a post request and callback results
 function markup(text, callback) {
