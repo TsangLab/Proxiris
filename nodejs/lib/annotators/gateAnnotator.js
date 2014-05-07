@@ -9,6 +9,7 @@ var querystring = require('querystring'), http = require('http'), cheerio = requ
 
 var annoLib = require(sensebase + 'lib/annotators/annotateLib'), annotations = require(sensebase + 'lib/annotations'), utils = require('../../lib/utils.js');
 exports.doProcess = doProcess;
+exports.markup = markup;
 
 // local configuration
 var instanceProps = utils.getProperties('./pipeline.properties');
@@ -29,7 +30,7 @@ function doProcess(combo, callback) {
   }
 
   // process retrieved annotations
-  markup(text, function(markedUp) {
+  markup(html, function(err, markedUp) {
     try {
       var $ = cheerio.load(markedUp);
     } catch (e) {
@@ -42,7 +43,6 @@ function doProcess(combo, callback) {
     wantedAnnos.forEach(function(annoType) {
       if (!candidates[annoType]) {
         $(selector).find(annoType).each(function(i, w) {
-      console.log(annoType, w);
           // now we have something that look like this 
           // <Organism gate:gateId="12524" annot_type="Organism" class="Organism" organism_scientific_name="unidentified influenza virus" organism_alias="Influenza Virus" NCBI_Taxonomy_WebPage="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=11309&amp;mode=info" NCBI_Taxonomy_ID="11309">Influenza Virus</Organism>
           // get its internal text and attributes
@@ -83,7 +83,7 @@ function markup(text, callback) {
           data += chunk;
       });
       res.on('end', function() {
-        callback(data);
+        callback(null, data);
       });
   });
 
