@@ -1,3 +1,12 @@
+/* # GATE annotation service
+ *
+ * Receives requests for annotation and serves them using Java component.
+*/
+
+/*jslint node: true */
+
+'use strict';
+
 var http = require('http'), querystring = require('querystring'), java = require("java"), fs = require('fs'), url = require('url'), path = require('path'),
     utils = require('./../lib/utils.js');
 
@@ -9,8 +18,8 @@ if (!fs.existsSync('target/proxiris.jar')) {
 }
 
 console.log('checking jar path');
-java.classpath = java.classpath.concat(javaProps['libs.list'].split(',').map(function(p) { 
-  var f = path.join(javaProps['libs.home'], p)
+java.classpath = java.classpath.concat(javaProps['libs.list'].split(',').map(function(p) {
+  var f = path.join(javaProps['libs.home'], p);
   if (!fs.existsSync(f)) {
     throw Error('property jar not found ' + f);
   }
@@ -35,7 +44,7 @@ http.createServer(function(request, response) {
 			pipe.processTextSync(response.post.data);
 			var ret = ''+pipe.getDocResultSync();
 
-			fs.writeFile("/tmp/gateResult.html", ret, function(err) { if (err) { console.log(err) } });
+			fs.writeFile("/tmp/gateResult.html", ret, function(err) { if (err) { console.log(err); } });
 
 			response.writeHead(200, "OK", {'Content-Type': 'text/html'});
 			response.write(ret);
@@ -72,4 +81,3 @@ function postRequest(request, response, callback) {
         callback();
     });
 }
-

@@ -1,6 +1,11 @@
-// GATE annotator
-// extracts instance annotations from markup
+/* # GATE annotator
+ *
+ * extracts instance annotations from markup
+*/
 
+/*jslint node: true */
+
+'use strict';
 
 // relative location of sensebase for libs FIXME
 var sensebase = '../../../node_modules/sensebase/';
@@ -43,7 +48,7 @@ function doProcess(combo, callback) {
     wantedAnnos.forEach(function(annoType) {
       if (!candidates[annoType]) {
         $(selector).find(annoType).each(function(i, w) {
-          // now we have something that look like this 
+          // now we have something that look like this
           // <Organism gate:gateId="12524" annot_type="Organism" class="Organism" organism_scientific_name="unidentified influenza virus" organism_alias="Influenza Virus" NCBI_Taxonomy_WebPage="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=11309&amp;mode=info" NCBI_Taxonomy_ID="11309">Influenza Virus</Organism>
           // get its internal text and attributes
           var exact = $($.html(w)).text(), attributes = $(w).attr();
@@ -89,5 +94,3 @@ function markup(text, callback) {
 
   postRequest.write(postData);
 }
-
-
