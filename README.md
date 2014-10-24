@@ -4,14 +4,11 @@ Proxiris
 Workgroup annotation
 
 This is the developing Proxiris project, focused on workgroup annotation in a
-team consisting of software and human agents. 
+team consisting of software and human agents.
 
-It is built with Node.js and ElasticSearch, and uses the Faye pub-sub
-implementation to couple components, as well as a proxy that links the server
-to browsers without use of a plugin. We are very excited to link to Open
-Annotation efforts and re-use elements from other OA projects.
+It is built on Sensebase, a general system for document storage and annotation based on Node.js and ElasticSearch.
 
-This version is an evaluation version focused on closed workgroups, so security
+This version is a developing version focused on closed workgroups, so security
 is all-or-nothing once logged in.
 
 The overall system focuses on a component oriented design, much of the code
@@ -39,7 +36,7 @@ Install Node.js (via NVM)
 
 `nvm install 0.10`
 
-`git clone https://github.com/TsangLab/SenseBase.git`
+npm install sensebase
 
 `cd SenseBase`
 
@@ -94,7 +91,7 @@ Create a config.js file:
 
 Create the defined uploadDirectory for serving those files.
 
-Run `sh host/schema.sh proxiris` to create the ElasticSearch explicit mappings.
+Run `node utils/reset` to create the ElasticSearch mappings.
 
 Start the HTTP service:
 
@@ -105,13 +102,13 @@ Annotators
 
 Annotators connect to the general system via a publication-subscribe system.
 They may be standalone, or they may have a wrapping service to connect them to
-a long running process. The GATE and Sentiment pipeline works this way. 
+a long running process. The GATE and Sentiment pipeline works this way.
 
 To manually start annotation, for example the Sentiment service:
 
 `cd annotateServices`
 
-`node sentimentService` 
+`node sentimentService`
 
 Start service pubsub agents, for Sentiment:
 
@@ -126,8 +123,6 @@ The GATE pipeline takes GATE tagged documents and transform them into instance a
 
 To configure the GATE pipeline:
 
-`cd java`
-
 `cp pipeline.properties.sample pipeline.properties`
 
 `$EDITOR pipeline.properties`
@@ -136,7 +131,11 @@ Note absolute paths are used to avoid much sorrow and pain when compiling and ex
 
 Edit as appropriate. The sample is for https://github.com/TsangLab/Annotators
 
-then `ant` to compile, or `ant run-pipeline` to test.
+then
+
+`cd java`
+
+`ant` to compile, or `ant run-pipeline` to test.
 
 then execute:
 
@@ -199,5 +198,3 @@ To access Proxiris' dashboard
 ========
 
 Go to http://my.great.domain and see documents appear as they are accessed via proxy or dragged and dropped into the list.
-
-
