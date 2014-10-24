@@ -34,8 +34,6 @@ public class TextMiningPipeline {
 	private String docResult;
 	private MapList mapResult;
 
-	static AnnotationConfig annoConfig = new AnnotationConfig();
-
   /**
    *
    * When run standalone, uses arg 1 properties file to process arg 2, outputting in /tmp/sample.html
@@ -49,7 +47,7 @@ public class TextMiningPipeline {
     System.out.println(g.getMapResult());
     writeFile(doc, "/tmp/sample.html");
 	}
-	
+
   /**
    *
    * initialize wtih properties file
@@ -58,7 +56,7 @@ public class TextMiningPipeline {
 	public void init(String config) throws GateException, IOException {
     System.out.println("init from " + System.getProperty("user.dir"));
 		File gateHome = null, xgappHome = null, xgappPluginsHome = null, siteConfigFile = null;
-		
+
 		try {
       Properties properties = new Properties();
       InputStream input = new FileInputStream(config);
@@ -119,17 +117,17 @@ public class TextMiningPipeline {
 	public String getDocResult() {
 		return docResult;
 	}
- 
+
   /**
    *
    * Get a map of annotations
    *
    **/
-	
+
 	public MapList getMapResult() {
 		return mapResult;
 	}
-	
+
   /**
    *
    * Actually add the annotations
@@ -146,7 +144,7 @@ public class TextMiningPipeline {
 		corpus.clear();
 		return doc;
 	}
-	
+
   /**
    *
    * Prepare an html snippet for annotation
@@ -160,7 +158,7 @@ public class TextMiningPipeline {
 		writeFile("<html><body>" +text + "</body></html>", tmp);
 		processFile(tmp);
 	}
-	
+
   /**
    *
    * Helper to write a file
