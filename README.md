@@ -145,49 +145,9 @@ to start the GATE service on port 9009. This program runs a number of sanity che
 
 then execute (in another terminal):
 
-`node nodejs/lib/annotators/gateAnnotator.js`
+`node nodejs/services/annotators/gateAnnotator.js <path to SenseBase>`
 
 to start the pubsub agent.
-
-Host Proxiris on port 80 (Apache)
-========
-
-`sudo apt-get install apache2`
-
-`sudo a2enmod proxy_http`
-
-Edit /etc/apache2/sites-available/proxiris:
-
-    <VirtualHost *:80>
-        ServerName dashboard.my.great.domain
-
-        ProxyRequests off
-
-        <Proxy *>
-            Order deny,allow
-            Allow from all
-        </Proxy>
-
-        DocumentRoot /var/www/
-
-        ProxyPass /lab !
-
-        <Location />
-            ProxyPass http://localhost:9999/ retry=0
-            ProxyPassReverse http://localhost:9999/
-        </Location>
-            ErrorLog ${APACHE_LOG_DIR}/wc.error.log
-
-            # Possible values include: debug, info, notice, warn, error, crit,
-            # alert, emerg.
-            LogLevel warn
-
-            CustomLog ${APACHE_LOG_DIR}/wc.access.log combined
-    </VirtualHost>
-
-`sudo a2ensite proxiris`
-
-`sudo service apache2 restart`
 
 To use Proxiris as a proxy
 ========
